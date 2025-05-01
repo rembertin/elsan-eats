@@ -1,5 +1,6 @@
 import { Button } from "~/components/ui/button";
 import { Link, Outlet } from "react-router";
+import { Toaster } from "~/components/ui/sonner";
 
 export default function AppLayout() {
   return (
@@ -20,6 +21,7 @@ export default function AppLayout() {
       <main className="flex-1 flex flex-col p-6 bg-white">
         <Outlet />
       </main>
+      <Toaster />
     </div>
   );
 }

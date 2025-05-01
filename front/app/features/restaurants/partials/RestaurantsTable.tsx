@@ -10,7 +10,8 @@ import { Button } from "~/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { TableWithBorders } from "~/components/table/table-with-borders";
+import { TableWithBorders } from "~/components/table/TableWithBorders";
+import { Link } from "react-router";
 
 export function RestaurantsTable({
   restaurants,
@@ -35,9 +36,11 @@ export function RestaurantsTable({
             <TableCell>{restaurant.name}</TableCell>
             <TableCell>{restaurant.category}</TableCell>
             <TableCell>{restaurant.dishesCount}</TableCell>
-            <TableCell>
-              <Button size="icon" variant="secondary" onClick={() => {}}>
-                <FontAwesomeIcon icon={faPenToSquare} />
+            <TableCell align="right">
+              <Button size="icon" variant="secondary" asChild>
+                <Link to={`/restaurants/${restaurant.id}/edit`}>
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </Link>
               </Button>
               <Button
                 size="icon"

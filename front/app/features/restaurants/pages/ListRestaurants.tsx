@@ -44,7 +44,6 @@ export function ListRestaurants() {
     <Container>
       <Heading1>Liste des restaurants</Heading1>
 
-      <div className="flex justify-end mb-4"></div>
       {!restaurants ? (
         <p>Chargement...</p>
       ) : restaurants.length > 0 ? (

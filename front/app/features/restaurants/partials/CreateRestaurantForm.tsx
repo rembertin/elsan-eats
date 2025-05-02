@@ -11,20 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
+import { Form, FormControl, FormField } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
 import { restaurantRepository } from "~/features/restaurants/repository/restaurant";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createRestaurantSchema } from "~/features/restaurants/validation/restaurant";
+import { FormGroup } from "~/components/form/FormGroup";
 
 type Props = {
   categories: CategoryItem[] | undefined;
@@ -38,10 +32,14 @@ export function CreateRestaurantForm({ categories }: Props) {
   const navigate = useNavigate();
 
   async function onSubmit(data: CreateRestaurantInputs) {
-    const { id } = await restaurantRepository.create(data);
+    try {
+      const { id } = await restaurantRepository.create(data);
 
-    toast.success(`"${data.name} créé."`);
-    navigate(`/restaurants/${id}/edit`);
+      toast.success(`"${data.name} créé."`);
+      navigate(`/restaurants/${id}/edit`);
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
+    }
   }
 
   return (
@@ -54,21 +52,16 @@ export function CreateRestaurantForm({ categories }: Props) {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>* Nom</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <FormGroup label="* Nom">
+              <Input {...field} />
+            </FormGroup>
           )}
         />
         <FormField
           control={form.control}
           name="categoryId"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>* Catégorie</FormLabel>
+            <FormGroup label="* Catégorie" wrapInFormControl={false}>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value?.toString()}
@@ -89,8 +82,7 @@ export function CreateRestaurantForm({ categories }: Props) {
                   ))}
                 </SelectContent>
               </Select>
-              <FormMessage />
-            </FormItem>
+            </FormGroup>
           )}
         />
         <div className="flex justify-end">

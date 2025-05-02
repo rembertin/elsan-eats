@@ -18,7 +18,9 @@ final class RestaurantController extends Controller
 {
     public function index(): JsonResource
     {
-        return RestaurantItemResource::collection(Restaurant::with('category')->get());
+        return RestaurantItemResource::collection(
+            Restaurant::with('category')->withCount('dishes')->get()
+        );
     }
 
     public function show(Restaurant $restaurant): JsonResource

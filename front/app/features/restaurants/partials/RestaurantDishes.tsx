@@ -53,6 +53,7 @@ export function RestaurantDishes({ restaurantId, dishes }: PropsType) {
       Ajouter un plat
     </Button>
   );
+
   return (
     <>
       {!dishes ? (

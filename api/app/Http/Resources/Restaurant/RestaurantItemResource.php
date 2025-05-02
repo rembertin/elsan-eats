@@ -19,6 +19,7 @@ final class RestaurantItemResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'category' => $this->resource->category->name,
+            'dishesCount' => $this->resource->dishes_count,
         ];
     }
 }

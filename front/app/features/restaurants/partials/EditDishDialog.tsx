@@ -17,6 +17,9 @@ import { dishRepository } from "~/features/restaurants/repository/dish";
 import { toast } from "sonner";
 import { EditDishForm } from "~/features/restaurants/partials/EditDishForm";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { updateDishSchema } from "~/features/restaurants/validation/dish";
 
 type Props = {
   restaurantId: number;
@@ -31,7 +34,10 @@ export function EditDishDialog({
   open,
   onOpenChange,
 }: Props) {
-  const form = useForm<UpdateDishInputs>();
+  const form = useForm<UpdateDishInputs>({
+    resolver: yupResolver(updateDishSchema),
+  });
+  const queryClient = useQueryClient();
 
   function resetForm() {
     form.reset({ ...dish });
@@ -47,6 +53,9 @@ export function EditDishDialog({
     toast.success(`Plat "${data.name}" mis à jour.`);
     onOpenChange(false);
     resetForm();
+    await queryClient.invalidateQueries({
+      queryKey: [`restaurant.${restaurantId}`],
+    });
   }
 
   function handleOpenChange(open: boolean) {

@@ -13,6 +13,9 @@ import { useForm } from "react-hook-form";
 import type { CreateDishInputs } from "~/features/restaurants/models";
 import { dishRepository } from "~/features/restaurants/repository/dish";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createDishSchema } from "~/features/restaurants/validation/dish";
 
 type Props = {
   restaurantId: number;
@@ -21,7 +24,10 @@ type Props = {
 };
 
 export function CreateDishDialog({ restaurantId, open, onOpenChange }: Props) {
-  const form = useForm<CreateDishInputs>();
+  const form = useForm<CreateDishInputs>({
+    resolver: yupResolver(createDishSchema),
+  });
+  const queryClient = useQueryClient();
 
   async function onSubmit(data: CreateDishInputs) {
     await dishRepository.create(restaurantId, data);
@@ -29,6 +35,10 @@ export function CreateDishDialog({ restaurantId, open, onOpenChange }: Props) {
     toast.success(`Plat "${data.name}" créé.`);
     onOpenChange(false);
     form.reset();
+
+    await queryClient.invalidateQueries({
+      queryKey: [`restaurant.${restaurantId}`],
+    });
   }
 
   return (

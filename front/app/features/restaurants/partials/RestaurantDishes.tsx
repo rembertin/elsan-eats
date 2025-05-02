@@ -47,20 +47,31 @@ export function RestaurantDishes({ restaurantId, dishes }: PropsType) {
     setIsEditDialogOpen(true);
   }
 
+  const createDishButton = (
+    <Button onClick={() => setIsCreateDialogOpen(true)} variant="default">
+      <FontAwesomeIcon icon={faPlus} />
+      Ajouter un plat
+    </Button>
+  );
   return (
     <>
-      <div className="flex justify-end mb-4">
-        <Button onClick={() => setIsCreateDialogOpen(true)} variant="default">
-          <FontAwesomeIcon icon={faPlus} />
-          Ajouter un plat
-        </Button>
-      </div>
-      {dishes && (
-        <RestaurantDishesTable
-          dishes={dishes}
-          onEditDish={(dish) => handleEditDish(dish)}
-          onDeleteDish={(dish) => handleClickDelete(dish)}
-        />
+      {!dishes ? (
+        <p>Chargement...</p>
+      ) : dishes.length > 0 ? (
+        <>
+          <div className="flex justify-end mb-4">{createDishButton}</div>
+          <RestaurantDishesTable
+            dishes={dishes}
+            onEditDish={(dish) => handleEditDish(dish)}
+            onDeleteDish={(dish) => handleClickDelete(dish)}
+          />
+        </>
+      ) : (
+        <p>
+          Aucun plat pour le moment.
+          <br className="mb-4" />
+          {createDishButton}
+        </p>
       )}
       <CreateDishDialog
         restaurantId={restaurantId}

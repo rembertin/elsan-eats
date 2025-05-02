@@ -28,7 +28,6 @@ export function RestaurantDishesTable({
     <TableWithBorders>
       <TableHeader>
         <TableRow>
-          <TableHead>Photo</TableHead>
           <TableHead>Nom</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Prix</TableHead>
@@ -38,9 +37,6 @@ export function RestaurantDishesTable({
       <TableBody>
         {dishes.map((dish: DishItem) => (
           <TableRow key={dish.id}>
-            <TableCell>
-              <img src={dish.photoPath} alt="" />
-            </TableCell>
             <TableCell>{dish.name}</TableCell>
             <TableCell>{dish.description}</TableCell>
             <TableCell>{formatPrice(dish.price)}</TableCell>

@@ -51,12 +51,10 @@ export interface CreateDishInputs {
   name: string;
   description: string;
   price: number;
-  photoPath: string;
 }
 
 export interface UpdateDishInputs {
   name: string;
   description: string;
   price: number;
-  photoPath: string;
 }

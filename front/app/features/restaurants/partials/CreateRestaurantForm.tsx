@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import type {
   CategoryItem,
   CreateRestaurantInputs,
-  RestaurantDetail,
 } from "~/features/restaurants/models";
 import { Input } from "~/components/ui/input";
 import {
@@ -24,13 +23,17 @@ import { Button } from "~/components/ui/button";
 import { restaurantRepository } from "~/features/restaurants/repository/restaurant";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createRestaurantSchema } from "~/features/restaurants/validation/restaurant";
 
 type Props = {
   categories: CategoryItem[] | undefined;
 };
 
 export function CreateRestaurantForm({ categories }: Props) {
-  const form = useForm<CreateRestaurantInputs>();
+  const form = useForm<CreateRestaurantInputs>({
+    resolver: yupResolver(createRestaurantSchema),
+  });
 
   const navigate = useNavigate();
 

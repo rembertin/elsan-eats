@@ -12,18 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
+import { Form, FormControl, FormField } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
 import { restaurantRepository } from "~/features/restaurants/repository/restaurant";
 import { toast } from "sonner";
 import { FormGroup } from "~/components/form/FormGroup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { updateRestaurantSchema } from "~/features/restaurants/validation/restaurant";
 
 type Props = {
   restaurant?: RestaurantDetail;
@@ -32,6 +27,7 @@ type Props = {
 
 export function EditRestaurantForm({ restaurant, categories }: Props) {
   const form = useForm<UpdateRestaurantInputs>({
+    resolver: yupResolver(updateRestaurantSchema),
     defaultValues: {
       name: restaurant?.name,
       categoryId: restaurant?.categoryId,

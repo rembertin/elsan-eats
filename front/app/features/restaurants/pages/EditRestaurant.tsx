@@ -6,6 +6,7 @@ import { RestaurantDishes } from "~/features/restaurants/partials/RestaurantDish
 import { useCategories } from "~/features/restaurants/hooks/category";
 import { EditRestaurantForm } from "~/features/restaurants/partials/EditRestaurantForm";
 import { Heading1 } from "~/components/headings/Heading1";
+import { Container } from "~/components/Container";
 
 type PropsType = {
   id: number;
@@ -19,12 +20,12 @@ export function EditRestaurant({ id }: PropsType) {
   const { categories } = useCategories();
 
   return (
-    <>
+    <Container>
       {restaurant && (
         <>
           <Heading1>Modifier "{restaurant.name}"</Heading1>
 
-          <Tabs defaultValue="general" className="w-2/3">
+          <Tabs defaultValue="general">
             <TabsList>
               <TabsTrigger value="general">Général</TabsTrigger>
               <TabsTrigger value="dishes">Plats</TabsTrigger>
@@ -44,6 +45,6 @@ export function EditRestaurant({ id }: PropsType) {
           </Tabs>
         </>
       )}
-    </>
+    </Container>
   );
 }

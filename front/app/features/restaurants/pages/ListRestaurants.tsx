@@ -9,6 +9,7 @@ import { Heading1 } from "~/components/headings/Heading1";
 import { restaurantRepository } from "~/features/restaurants/repository/restaurant";
 import { DeleteDialog } from "~/components/dialog/DeleteDialog";
 import { useDeleteItem } from "~/hooks/delete";
+import { Container } from "~/components/Container";
 
 export function ListRestaurants() {
   const queryClient = useQueryClient();
@@ -30,27 +31,36 @@ export function ListRestaurants() {
     },
   });
 
+  const createRestaurantButton = (
+    <Button variant="default" asChild={true}>
+      <Link to="/restaurants/create">
+        <FontAwesomeIcon icon={faPlus} />
+        Ajouter un restaurant
+      </Link>
+    </Button>
+  );
+
   return (
-    <>
+    <Container>
       <Heading1>Liste des restaurants</Heading1>
 
-      <div className="flex justify-end mb-4">
-        <Button variant="default" asChild={true}>
-          <Link to="/restaurants/create">
-            <FontAwesomeIcon icon={faPlus} />
-            Ajouter un restaurant
-          </Link>
-        </Button>
-      </div>
+      <div className="flex justify-end mb-4"></div>
       {!restaurants ? (
         <p>Chargement...</p>
       ) : restaurants.length > 0 ? (
-        <RestaurantsTable
-          restaurants={restaurants}
-          onClickDeleteRestaurant={handleClickDelete}
-        />
+        <>
+          <div className="flex justify-end mb-4">{createRestaurantButton}</div>
+          <RestaurantsTable
+            restaurants={restaurants}
+            onClickDeleteRestaurant={handleClickDelete}
+          />
+        </>
       ) : (
-        <p>No restaurants found</p>
+        <p>
+          Aucun restaurant pour le moment.
+          <br className="mb-4" />
+          {createRestaurantButton}
+        </p>
       )}
       {restaurantToDelete && (
         <DeleteDialog
@@ -61,6 +71,6 @@ export function ListRestaurants() {
           onSubmit={submitDelete}
         />
       )}
-    </>
+    </Container>
   );
 }

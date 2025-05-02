@@ -1,16 +1,37 @@
-import type {
-  CreateDishInputs,
-  DishDetail,
-  DishItem,
-  UpdateDishInputs,
-} from "../models";
-import { undefined } from "zod";
+import { del, get, post, put } from "~/api/client/api-client";
+import type { CreateDishInputs, DishDetail, UpdateDishInputs } from "../models";
 
 export interface DishRepository {
   get(restaurantId: number, dishId: number): Promise<DishDetail>;
   create(restaurantId: number, data: CreateDishInputs): Promise<void>;
-  update(restaurantId: number, id: number, data: UpdateDishInputs): any;
+  update(
+    restaurantId: number,
+    id: number,
+    data: UpdateDishInputs,
+  ): Promise<void>;
   delete(restaurantId: number, dishId: number): Promise<void>;
+}
+
+class ApiDishRepository implements DishRepository {
+  create(restaurantId: number, data: CreateDishInputs): Promise<void> {
+    return post(`/restaurants/${restaurantId}/dishes`, data);
+  }
+
+  delete(restaurantId: number, dishId: number): Promise<void> {
+    return del(`/restaurants/${restaurantId}/dishes/${dishId}`);
+  }
+
+  get(restaurantId: number, dishId: number): Promise<DishDetail> {
+    return get(`/restaurants/${restaurantId}/dishes/${dishId}`);
+  }
+
+  update(
+    restaurantId: number,
+    dishId: number,
+    data: UpdateDishInputs,
+  ): Promise<void> {
+    return put(`/restaurants/${restaurantId}/dishes/${dishId}`, data);
+  }
 }
 
 class MockDishRepository implements DishRepository {
@@ -52,4 +73,4 @@ class MockDishRepository implements DishRepository {
   }
 }
 
-export const dishRepository: DishRepository = new MockDishRepository();
+export const dishRepository: DishRepository = new ApiDishRepository();

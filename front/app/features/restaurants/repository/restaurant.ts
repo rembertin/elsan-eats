@@ -15,6 +15,28 @@ export interface RestaurantRepository {
   delete(id: number): Promise<void>;
 }
 
+class ApiRestaurantRepository implements RestaurantRepository {
+  list(): Promise<RestaurantItem[]> {
+    return get<RestaurantItem[]>(`/restaurants`);
+  }
+
+  get(restaurantId: any): Promise<RestaurantDetail> {
+    return get<RestaurantDetail>(`/restaurants/${restaurantId}`);
+  }
+
+  create(inputs: CreateRestaurantInputs): Promise<CreateRestaurantResponse> {
+    return post<CreateRestaurantResponse>("/restaurants", inputs);
+  }
+
+  async update(id: number, data: UpdateRestaurantInputs): Promise<void> {
+    await put(`/restaurants/${id}`, data);
+  }
+
+  async delete(id: number): Promise<void> {
+    await del(`/restaurants/${id}`);
+  }
+}
+
 class MockRestaurantRepository implements RestaurantRepository {
   private readonly restaurants: RestaurantItem[];
   constructor() {
@@ -113,4 +135,4 @@ class MockRestaurantRepository implements RestaurantRepository {
 }
 
 export const restaurantRepository: RestaurantRepository =
-  new MockRestaurantRepository();
+  new ApiRestaurantRepository();

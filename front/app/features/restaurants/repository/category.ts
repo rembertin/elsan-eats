@@ -1,7 +1,14 @@
 import type { CategoryItem } from "~/features/restaurants/models";
+import { get } from "~/api/client/api-client";
 
 export interface CategoryRepository {
   list(): Promise<CategoryItem[]>;
+}
+
+class ApiCategoryRepository implements CategoryRepository {
+  list(): Promise<CategoryItem[]> {
+    return get<CategoryItem[]>("/categories");
+  }
 }
 
 export class MockCategoryRepository implements CategoryRepository {
@@ -27,6 +34,5 @@ export class MockCategoryRepository implements CategoryRepository {
   }
 }
 
-const mockCategoryRepository = new MockCategoryRepository();
-
-export { mockCategoryRepository as categoryRepository };
+export const categoryRepository: CategoryRepository =
+  new ApiCategoryRepository();

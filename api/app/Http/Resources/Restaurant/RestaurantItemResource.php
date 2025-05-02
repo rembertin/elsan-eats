@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Restaurant;
 
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
@@ -18,6 +18,7 @@ final class RestaurantItemResource extends JsonResource
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
+            'category' => $this->resource->category->name,
         ];
     }
 }

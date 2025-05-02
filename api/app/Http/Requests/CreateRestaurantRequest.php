@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 final class CreateRestaurantRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ final class CreateRestaurantRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'address' => ['required'],
+            'categoryId' => ['required', Rule::exists('categories', 'id')],
         ];
     }
 
